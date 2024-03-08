@@ -124,6 +124,8 @@ class ConnectFourBoard {
 
     fun status(): ConnectFourGameStatus {
         if (this.checkForTie()) return ConnectFourGameStatus.TIE
+        // TODO: erm why didn't i put a player 2 win condition ... this is being used for board evaluation
+        // how is this even working correctly lol
         if (this.checkForWin()) return ConnectFourGameStatus.PLAYER_ONE_WIN
         return ConnectFourGameStatus.PLAYING
     }

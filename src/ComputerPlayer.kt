@@ -3,6 +3,13 @@ import kotlin.random.Random
 import kotlin.system.exitProcess
 
 class ComputerPlayer : Player() {
+    private val PLAYER_ONE_WIN_SCORE = 1000
+    private val PLAYER_TWO_LOSE_SCORE = -1000
+    private val AGING_PENALTY = 3
+
+    private val TRUE_COLOR = ConnectFourBoardPiece.RED
+    private val FALSE_COLOR = ConnectFourBoardPiece.YELLOW
+
     override fun makeMove(board: ConnectFourBoard, isMaximizingPlayer: Boolean): Int {
 
         val colAndScore = minimax(board, 1, false)
@@ -10,29 +17,29 @@ class ComputerPlayer : Player() {
 
     }
 
+    // TODO implement this
+    // game is ongoing, block opponent wins, count 3 in a rows
+    private fun runningGameEval(board: ConnectFourBoard): Int {
+        // block a win from opponent
+        return 1
+    }
+
     private fun naiveHeuristicEval(board: ConnectFourBoard, depth: Int): Int {
         when (board.status()) {
             ConnectFourGameStatus.PLAYING -> {
-                return 0
+                return runningGameEval(board)
             }
             ConnectFourGameStatus.TIE -> {
                 return 0
             }
             ConnectFourGameStatus.PLAYER_ONE_WIN -> {
-                return LOSE_SCORE + depth * AGING_PENALTY
+                return PLAYER_TWO_LOSE_SCORE + depth * AGING_PENALTY
             }
             ConnectFourGameStatus.PLAYER_TWO_WIN -> {
-                return WIN_SCORE + depth * AGING_PENALTY
+                return PLAYER_ONE_WIN_SCORE + depth * AGING_PENALTY
             }
         }
     }
-
-    private val WIN_SCORE = 1000
-    private val LOSE_SCORE = -1000
-    private val AGING_PENALTY = 3
-
-    private val TRUE_COLOR = ConnectFourBoardPiece.RED
-    private val FALSE_COLOR = ConnectFourBoardPiece.YELLOW
 
     private fun minimax(node: ConnectFourBoard, depth: Int, maximizingPlayer: Boolean): Pair<Int, Int> {
         if (depth == 0 || node.status() != ConnectFourGameStatus.PLAYING) {

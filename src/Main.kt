@@ -15,14 +15,13 @@ fun main() {
     // [x] TODO then, implement simple functionality against a human player (ConnectFourGameMode.TWO_PLAYER)
     // [x] TODO and after that, against a random robot
     // [x] TODO we're not done yet - implement Minimax!
-    // [ ] TODO and finally, alpha beta pruning
     // [x] TODO clean up printing of board
     // [x] TODO add unit testing for minimax
-    // [ ] TODO improve scoring function for minimax
-    // [ ] TODO oh and after all that, profile the program - I probably need to store the bitboard
-    // [ ] TODO include & enforce a style guide
+    // [x] TODO and after all that, make a test helper: board.readFromAscii(...)
 
-    // [ ] TODO and after all that, make a test helper: board.readFromAscii(...) that converts the toString back to the grid
-    //     instead of making a new one every time
+    // [ ] TODO and finally, alpha beta pruning
+    // [ ] TODO improve scoring function for minimax
+    // [ ] TODO profile the program - I probably need to cache the bitboard
+    // [ ] TODO include & enforce a style guide
 
 }
