@@ -1,0 +1,5 @@
+enum class ConnectFourGameMode {
+    SINGLE_PLAYER_VS_RANDOM_AI,
+    SINGLE_PLAYER_VS_COMPUTER_AI,
+    TWO_PLAYER
+}
