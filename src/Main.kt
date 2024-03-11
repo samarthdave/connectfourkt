@@ -19,9 +19,15 @@ fun main() {
     // [x] TODO add unit testing for minimax
     // [x] TODO and after all that, make a test helper: board.readFromAscii(...)
 
+    // [x] TODO fix player 1 & 2 win condition bug
     // [ ] TODO and finally, alpha beta pruning
     // [ ] TODO improve scoring function for minimax
     // [ ] TODO profile the program - I probably need to cache the bitboard
     // [ ] TODO include & enforce a style guide
+
+    // misc
+    // [ ] TODO change drop piece to not accept "colors"
+    //     remove the concept of colors and just drop Player Pieces
+    //     "colors" can be determined at render time with a mapping PlayerToColor
 
 }

@@ -99,11 +99,17 @@ class ConnectFourBoard {
         return Pair(position.toString().toLong(2), mask.toString().toLong(2))
     }
 
-    private fun checkForWin(): Boolean {
+    private fun checkForWin(): Pair<Boolean, ConnectFourGameStatus> {
         val playerOneBitmaps: Pair<Long, Long> = this.getPositionMaskBitmap(ConnectFourBoardPiece.RED)
         val opponentPosition: Long = playerOneBitmaps.first xor playerOneBitmaps.second
 
-        return bitwiseWinCheck(playerOneBitmaps.first) or bitwiseWinCheck(opponentPosition)
+        if (bitwiseWinCheck(playerOneBitmaps.first))
+            return Pair(true, ConnectFourGameStatus.PLAYER_ONE_WIN)
+
+        if (bitwiseWinCheck(opponentPosition))
+            return Pair(true, ConnectFourGameStatus.PLAYER_TWO_WIN)
+
+        return Pair(false, ConnectFourGameStatus.PLAYING)
     }
 
     private fun checkForTie(): Boolean {
@@ -124,10 +130,7 @@ class ConnectFourBoard {
 
     fun status(): ConnectFourGameStatus {
         if (this.checkForTie()) return ConnectFourGameStatus.TIE
-        // TODO: erm why didn't i put a player 2 win condition ... this is being used for board evaluation
-        // how is this even working correctly lol
-        if (this.checkForWin()) return ConnectFourGameStatus.PLAYER_ONE_WIN
-        return ConnectFourGameStatus.PLAYING
+        return this.checkForWin().second
     }
 
     override fun toString(): String {
@@ -145,6 +148,7 @@ class ConnectFourBoard {
             sb.append(row.joinToString("|"))
             sb.append("|\n")
         }
+        sb.append(" ${(0..<this.width).joinToString(" ")}\n")
         return sb.toString()
     }
 

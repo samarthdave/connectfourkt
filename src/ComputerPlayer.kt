@@ -4,7 +4,7 @@ import kotlin.system.exitProcess
 
 class ComputerPlayer : Player() {
     private val PLAYER_ONE_WIN_SCORE = 1000
-    private val PLAYER_TWO_LOSE_SCORE = -1000
+    private val PLAYER_TWO_WIN_SCORE = -1000
     private val AGING_PENALTY = 3
 
     private val TRUE_COLOR = ConnectFourBoardPiece.RED
@@ -12,7 +12,7 @@ class ComputerPlayer : Player() {
 
     override fun makeMove(board: ConnectFourBoard, isMaximizingPlayer: Boolean): Int {
 
-        val colAndScore = minimax(board, 1, false)
+        val colAndScore = minimax(board, 3, false)
         return colAndScore.first
 
     }
@@ -25,18 +25,21 @@ class ComputerPlayer : Player() {
     }
 
     private fun naiveHeuristicEval(board: ConnectFourBoard, depth: Int): Int {
-        when (board.status()) {
+        return when (board.status()) {
             ConnectFourGameStatus.PLAYING -> {
-                return runningGameEval(board)
+                runningGameEval(board)
             }
+
             ConnectFourGameStatus.TIE -> {
-                return 0
+                0
             }
+
             ConnectFourGameStatus.PLAYER_ONE_WIN -> {
-                return PLAYER_TWO_LOSE_SCORE + depth * AGING_PENALTY
+                PLAYER_ONE_WIN_SCORE + depth * AGING_PENALTY
             }
+
             ConnectFourGameStatus.PLAYER_TWO_WIN -> {
-                return PLAYER_ONE_WIN_SCORE + depth * AGING_PENALTY
+                PLAYER_TWO_WIN_SCORE + depth * AGING_PENALTY
             }
         }
     }
