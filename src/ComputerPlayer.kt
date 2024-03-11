@@ -11,10 +11,8 @@ class ComputerPlayer : Player() {
     private val FALSE_COLOR = ConnectFourBoardPiece.YELLOW
 
     override fun makeMove(board: ConnectFourBoard, isMaximizingPlayer: Boolean): Int {
-
         val colAndScore = minimax(board, 3, false)
         return colAndScore.first
-
     }
 
     // TODO implement this

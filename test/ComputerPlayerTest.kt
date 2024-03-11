@@ -15,16 +15,6 @@ class ComputerPlayerTest {
     private val board = ConnectFourBoard()
     private val player = ComputerPlayer()
 
-//    Player 2 chose column 3 ; success=true
-//    |_|_|_|_|_|_|_|
-//    |O|_|_|_|_|_|_|
-//    |O|O|_|_|_|_|_|
-//    |X|X|_|O|_|_|_|
-//    |X|X|X|O|_|_|_|
-//    |X|X|X|O|X|_|_|
-//    0 1 2 3 4 5 6
-      //     ^ dropped in this one?? why didn't it see the win?
-
     @org.junit.jupiter.api.Test
     fun testMinimaxCase1() {
 //        |_|_|_|_|_|_|_|
@@ -75,5 +65,25 @@ class ComputerPlayerTest {
         val col = player.makeMove(board)
 
         assertEquals(6, col)
+    }
+
+    @Test
+    fun testMinimaxCase4() {
+//        |_|_|_|_|_|_|_|
+//        |_|_|_|_|_|_|O|
+//        |_|O|O|_|_|_|X|
+//        |_|X|X|O|_|_|O|
+//        |X|X|X|O|_|_|O|
+//        |X|X|X|O|_|_|O|
+//         0 1 2 3 4 5 6
+//               ^
+//        both players should choose that position
+        board.resetBoard()
+        board.hydrateBoardState("061626660313231122")
+
+        var col = player.makeMove(board, false)
+        assertEquals(3, col)
+        col = player.makeMove(board, false)
+        assertEquals(3, col)
     }
 }
