@@ -10,7 +10,9 @@ class ComputerPlayer : Player() {
     private val FALSE_COLOR = ConnectFourBoardPiece.YELLOW
 
     override fun makeMove(board: ConnectFourBoard, isMaximizingPlayer: Boolean): Int {
-        val colAndScore = minimax(board, 4, false, Int.MIN_VALUE, Int.MAX_VALUE)
+        val colAndScore = minimax(board, 3, false, Int.MIN_VALUE, Int.MAX_VALUE)
+        // mainly testing with test case #3 ... it's making the wrong move
+        println("${colAndScore.first},${colAndScore.second}")
         return colAndScore.first
     }
 
@@ -55,11 +57,13 @@ class ComputerPlayer : Player() {
                     maxEval = eval
                     chosenCol = col
                 }
-                alpha = max(alpha, eval)
-                if (beta <= alpha) {
+                if (chosenCol == 6) {println("col6: $eval")}
+                if (beta < alpha) {
                     node.undoDrop(res.second!!)
+                    if (chosenCol == 6) {println("BREAKING")}
                     break
                 }
+                alpha = max(alpha, eval)
                 node.undoDrop(res.second!!)
             }
             return Pair(chosenCol, maxEval)
@@ -73,11 +77,13 @@ class ComputerPlayer : Player() {
                     minEval = eval
                     chosenCol = col
                 }
-                beta = min(beta, eval)
-                if (beta <= alpha) {
+                if (chosenCol == 6) {println("col6: $eval")}
+                if (beta < alpha) {
                     node.undoDrop(res.second!!)
+                    if (chosenCol == 6) {println("BREAKING")}
                     break
                 }
+                beta = min(beta, eval)
                 node.undoDrop(res.second!!)
             }
             return Pair(chosenCol, minEval)
