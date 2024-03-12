@@ -1,6 +1,5 @@
 import kotlin.math.max
-import kotlin.random.Random
-import kotlin.system.exitProcess
+import kotlin.math.min
 
 class ComputerPlayer : Player() {
     private val PLAYER_ONE_WIN_SCORE = 1000
@@ -11,18 +10,16 @@ class ComputerPlayer : Player() {
     private val FALSE_COLOR = ConnectFourBoardPiece.YELLOW
 
     override fun makeMove(board: ConnectFourBoard, isMaximizingPlayer: Boolean): Int {
-        val colAndScore = minimax(board, 3, false)
+        val colAndScore = minimax(board, 4, false, Int.MIN_VALUE, Int.MAX_VALUE)
         return colAndScore.first
     }
 
     // TODO implement this
-    // game is ongoing, block opponent wins, count 3 in a rows
     private fun runningGameEval(board: ConnectFourBoard): Int {
-        // block a win from opponent
         return 1
     }
 
-    private fun naiveHeuristicEval(board: ConnectFourBoard, depth: Int): Int {
+    private fun staticEvaluationOfPosition(board: ConnectFourBoard, depth: Int): Int {
         return when (board.status()) {
             ConnectFourGameStatus.PLAYING -> {
                 runningGameEval(board)
@@ -42,36 +39,48 @@ class ComputerPlayer : Player() {
         }
     }
 
-    private fun minimax(node: ConnectFourBoard, depth: Int, maximizingPlayer: Boolean): Pair<Int, Int> {
+    private fun minimax(node: ConnectFourBoard, depth: Int, maximizingPlayer: Boolean, paramAlpha: Int, paramBeta: Int): Pair<Int, Int> {
+        var alpha = paramAlpha
+        var beta = paramBeta
         if (depth == 0 || node.status() != ConnectFourGameStatus.PLAYING) {
-            return Pair(-1, naiveHeuristicEval(node, depth))
+            return Pair(-1, staticEvaluationOfPosition(node, depth))
         }
         if (maximizingPlayer) {
-            var valueNBSP = Int.MIN_VALUE
+            var maxEval = Int.MIN_VALUE
             var chosenCol = -1
             for (col in node.availableLocations()) {
                 val res = node.dropPiece(col, TRUE_COLOR)
-                val score = minimax(node, depth - 1, false).second
-                if (score > valueNBSP) {
+                val eval = minimax(node, depth - 1, false, alpha, beta).second
+                if (eval > maxEval) {
+                    maxEval = eval
                     chosenCol = col
-                    valueNBSP = score
+                }
+                alpha = max(alpha, eval)
+                if (beta <= alpha) {
+                    node.undoDrop(res.second!!)
+                    break
                 }
                 node.undoDrop(res.second!!)
             }
-            return Pair(chosenCol, valueNBSP)
+            return Pair(chosenCol, maxEval)
         } else {
-            var valueNBSP = Int.MAX_VALUE
+            var minEval = Int.MAX_VALUE
             var chosenCol = -1
             for (col in node.availableLocations()) {
                 val res = node.dropPiece(col, FALSE_COLOR)
-                val score = minimax(node, depth - 1, true).second
-                if (score < valueNBSP) {
-                    valueNBSP = score
+                val eval = minimax(node, depth - 1, true, alpha, beta).second
+                if (eval < minEval) {
+                    minEval = eval
                     chosenCol = col
+                }
+                beta = min(beta, eval)
+                if (beta <= alpha) {
+                    node.undoDrop(res.second!!)
+                    break
                 }
                 node.undoDrop(res.second!!)
             }
-            return Pair(chosenCol, valueNBSP)
+            return Pair(chosenCol, minEval)
         }
     }
 

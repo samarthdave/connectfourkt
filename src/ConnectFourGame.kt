@@ -65,6 +65,7 @@ class ConnectFourGame(gameModeChoice: ConnectFourGameMode, playingFirstChoice: B
     }
 
     fun startGame() {
+        println(board)
         while (this.status() == ConnectFourGameStatus.PLAYING && board.availableLocations().size > 0) {
             // index into whichever player is "current"
             val currentPlayerIndex: Int = movesElapsed % 2
