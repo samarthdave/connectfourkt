@@ -133,6 +133,57 @@ class ConnectFourBoard {
         return this.checkForWin().second
     }
 
+    fun evaluateBoard(): Int {
+        val playerScore = evaluatePlayerScore()
+        val opponentScore = evaluateOpponentScore()
+        return playerScore - opponentScore
+    }
+
+    private fun evaluatePlayerScore(): Int {
+        var score = 0
+        for (i in 0..<6) {
+            for (j in 0..<7) {
+                if (grid[i][j] == ConnectFourBoardPiece.RED.color) {
+                    score += evaluatePosition(i, j, ConnectFourBoardPiece.RED.color)
+                }
+            }
+        }
+        return score
+    }
+
+    private fun evaluateOpponentScore(): Int {
+        var score = 0
+        for (i in 0..<6) {
+            for (j in 0..<7) {
+                if (grid[i][j] == ConnectFourBoardPiece.YELLOW.color) {
+                    score -= evaluatePosition(i, j, ConnectFourBoardPiece.YELLOW.color)
+                }
+            }
+        }
+        return score
+    }
+
+    private fun evaluatePosition(row: Int, col: Int, player: Char): Int {
+        var score = 0
+        val directions = arrayOf(
+            Pair(-1, 0), Pair(1, 0), Pair(0, -1), Pair(0, 1),
+            Pair(-1, -1), Pair(-1, 1), Pair(1, -1), Pair(1, 1)
+        )
+
+        for (dir in directions) {
+            var count = 0
+            var r = row + dir.first
+            var c = col + dir.second
+            while (r in 0..<6 && c in 0..<7 && grid[r][c] == player) {
+                count++
+                r += dir.first
+                c += dir.second
+            }
+            score += count
+        }
+        return score
+    }
+
     override fun toString(): String {
 //        |_|_|_|_|_|_|_|
 //        |_|_|_|_|_|_|_|
@@ -144,11 +195,16 @@ class ConnectFourBoard {
 
         val sb: StringBuilder = StringBuilder()
         for (row: CharArray in grid) {
-            sb.append('|')
-            sb.append(row.joinToString("|"))
-            sb.append("|\n")
+            sb.append(' ')
+            for (char in row) {
+                if (char == ConnectFourBoardPiece.RED.color) sb.append("🔴")
+                if (char == ConnectFourBoardPiece.YELLOW.color) sb.append("🟡")
+                if (char == ConnectFourBoardPiece.EMPTY.color) sb.append("⚪")
+            }
+            sb.append("\n")
         }
-        sb.append(" ${(0..<this.width).joinToString(" ")}\n")
+//        sb.append(" ${(0..<this.width).joinToString(" ")}\n")
+        sb.append(" 0 1  2 3 4 5 6")
         return sb.toString()
     }
 

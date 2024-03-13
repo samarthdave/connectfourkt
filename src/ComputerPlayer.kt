@@ -4,21 +4,19 @@ import kotlin.math.min
 class ComputerPlayer : Player() {
     private val PLAYER_ONE_WIN_SCORE = 1000
     private val PLAYER_TWO_WIN_SCORE = -1000
-    private val AGING_PENALTY = 3
+    private val AGING_PENALTY = 10
 
     private val TRUE_COLOR = ConnectFourBoardPiece.RED
     private val FALSE_COLOR = ConnectFourBoardPiece.YELLOW
 
     override fun makeMove(board: ConnectFourBoard, isMaximizingPlayer: Boolean): Int {
-        val colAndScore = minimax(board, 3, false, Int.MIN_VALUE, Int.MAX_VALUE)
+        val colAndScore = minimax(board, 4, false, Int.MIN_VALUE, Int.MAX_VALUE)
         // mainly testing with test case #3 ... it's making the wrong move
-        println("${colAndScore.first},${colAndScore.second}")
         return colAndScore.first
     }
 
-    // TODO implement this
     private fun runningGameEval(board: ConnectFourBoard): Int {
-        return 1
+        return board.evaluateBoard()
     }
 
     private fun staticEvaluationOfPosition(board: ConnectFourBoard, depth: Int): Int {
@@ -36,7 +34,7 @@ class ComputerPlayer : Player() {
             }
 
             ConnectFourGameStatus.PLAYER_TWO_WIN -> {
-                PLAYER_TWO_WIN_SCORE + depth * AGING_PENALTY
+                PLAYER_TWO_WIN_SCORE - (depth * AGING_PENALTY)
             }
         }
     }
@@ -57,10 +55,8 @@ class ComputerPlayer : Player() {
                     maxEval = eval
                     chosenCol = col
                 }
-                if (chosenCol == 6) {println("col6: $eval")}
                 if (beta < alpha) {
                     node.undoDrop(res.second!!)
-                    if (chosenCol == 6) {println("BREAKING")}
                     break
                 }
                 alpha = max(alpha, eval)
@@ -77,10 +73,8 @@ class ComputerPlayer : Player() {
                     minEval = eval
                     chosenCol = col
                 }
-                if (chosenCol == 6) {println("col6: $eval")}
                 if (beta < alpha) {
                     node.undoDrop(res.second!!)
-                    if (chosenCol == 6) {println("BREAKING")}
                     break
                 }
                 beta = min(beta, eval)
@@ -89,20 +83,4 @@ class ComputerPlayer : Player() {
             return Pair(chosenCol, minEval)
         }
     }
-
-//function minimax(node, depth, maximizingPlayer) is
-//    if depth = 0 or node is a terminal node then
-//        return the heuristic value of node
-//    if maximizingPlayer then
-//        value := −∞
-//        for each child of node do
-//            value := max(value, minimax(child, depth − 1, FALSE))
-//        return value
-//    else (* minimizing player *)
-//        value := +∞
-//        for each child of node do
-//            value := min(value, minimax(child, depth − 1, TRUE))
-//        return value
-
-
 }
