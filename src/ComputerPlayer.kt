@@ -10,8 +10,7 @@ class ComputerPlayer : Player() {
     private val FALSE_COLOR = ConnectFourBoardPiece.YELLOW
 
     override fun makeMove(board: ConnectFourBoard, isMaximizingPlayer: Boolean): Int {
-        val colAndScore = minimax(board, 4, false, Int.MIN_VALUE, Int.MAX_VALUE)
-        // mainly testing with test case #3 ... it's making the wrong move
+        val colAndScore = minimax(board, 5, false, Int.MIN_VALUE, Int.MAX_VALUE)
         return colAndScore.first
     }
 
