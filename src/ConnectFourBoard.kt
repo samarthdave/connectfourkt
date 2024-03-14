@@ -53,6 +53,17 @@ class ConnectFourBoard {
         return true
     }
 
+//    private fun canDropInColumn(col: Int): Boolean {
+//        return (mask and topMask(col)) == 0L
+//    }
+//
+//    companion object {
+//        fun topMask(col: Int): Long {
+//            return (1L shl (HEIGHT - 1)) shl col * (HEIGHT + 1)
+//        }
+//    }
+
+
     private fun canDropInColumn(col: Int): Pair<Int, Int>? {
         // check if within bounds
         if (col < 0 || col > this.width - 1) return null
@@ -133,7 +144,7 @@ class ConnectFourBoard {
         return this.checkForWin().second
     }
 
-    fun evaluateBoard(): Int {
+    fun calculateStaticEvaluation(): Int {
         val playerScore = evaluatePlayerScore()
         val opponentScore = evaluateOpponentScore()
         return playerScore - opponentScore

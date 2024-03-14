@@ -14,14 +14,10 @@ class ComputerPlayer : Player() {
         return colAndScore.first
     }
 
-    private fun runningGameEval(board: ConnectFourBoard): Int {
-        return board.evaluateBoard()
-    }
-
     private fun staticEvaluationOfPosition(board: ConnectFourBoard, depth: Int): Int {
         return when (board.status()) {
             ConnectFourGameStatus.PLAYING -> {
-                runningGameEval(board)
+                board.calculateStaticEvaluation()
             }
 
             ConnectFourGameStatus.TIE -> {
