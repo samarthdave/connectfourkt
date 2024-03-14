@@ -7,9 +7,9 @@ class HumanPlayer : Player() {
         println("=== Human Player Move ===")
         var columnChoice: Int
         do {
-            println("Enter a valid column: ")
-            columnChoice = reader.nextInt()
-        } while(!board.availableLocations().contains(columnChoice));
+            print("Enter a valid column (1-${ConnectFourBoard.DEFAULT_BOARD_WIDTH}): ")
+            columnChoice = reader.nextInt() - 1
+        } while(board.inBounds(columnChoice) && !board.availableLocations().contains(columnChoice));
         return columnChoice
     }
 }

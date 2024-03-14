@@ -25,7 +25,7 @@ class ComputerPlayerTest {
 //        |_|_|X|O|O|O|?|
 //                     ^ should drop here
         board.resetBoard()
-        board.hydrateBoardState("230405")
+        board._hydrateBoardState("230405")
 
         val col = player.makeMove(board)
 
@@ -42,7 +42,7 @@ class ComputerPlayerTest {
 //        |O|O|O|_|X|_|_|
 //               ^ should drop here
         board.resetBoard()
-        board.hydrateBoardState("404142")
+        board._hydrateBoardState("404142")
 
         val col = player.makeMove(board)
 
@@ -60,7 +60,7 @@ class ComputerPlayerTest {
 //         0 1 2 3 4 5 6
 //                     ^ should drop here
         board.resetBoard()
-        board.hydrateBoardState("66554463453")
+        board._hydrateBoardState("66554463453")
 
         val col = player.makeMove(board)
 
@@ -79,7 +79,7 @@ class ComputerPlayerTest {
 //               ^
 //        both players should choose that position
         board.resetBoard()
-        board.hydrateBoardState("061626660313231122")
+        board._hydrateBoardState("061626660313231122")
 
         var col = player.makeMove(board, false)
         assertEquals(3, col)

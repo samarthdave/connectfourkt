@@ -18,7 +18,7 @@
 [x] fix player 1 & 2 win condition bug
 [x] and finally, alpha beta pruning
 [x] improve scoring function for minimax
-[ ] fix numbering for the integer drop column lol
+[x] fix numbering for the integer drop column lol
 [ ] profile the program - I probably need to cache the bitboard
 [ ] include & enforce a style guide
 [ ] read the blog above & start implementing

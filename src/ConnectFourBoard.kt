@@ -63,10 +63,14 @@ class ConnectFourBoard {
 //        }
 //    }
 
+    fun inBounds(col: Int): Boolean {
+        return !(col < 0 || col > this.width - 1)
+    }
 
     private fun canDropInColumn(col: Int): Pair<Int, Int>? {
+        // TODO: refactor this to return a boolean & use bitboard
         // check if within bounds
-        if (col < 0 || col > this.width - 1) return null
+        if (!this.inBounds(col)) return null
         // if there's any space, return true
         for (row in (this.height - 1) downTo 0)
             if (this.grid[row][col] == ConnectFourBoardPiece.EMPTY.color)
@@ -131,7 +135,7 @@ class ConnectFourBoard {
         return true
     }
 
-    fun hydrateBoardState(columnMoves: String) {
+    fun _hydrateBoardState(columnMoves: String) {
         var index = 0
         for (char in columnMoves) {
             this.dropPiece(char.digitToInt(), ConnectFourGame.playerColors[index % 2])
@@ -215,7 +219,7 @@ class ConnectFourBoard {
             sb.append("\n")
         }
 //        sb.append(" ${(0..<this.width).joinToString(" ")}\n")
-        sb.append(" 0 1  2 3 4 5 6")
+        sb.append(" 1\uFE0F⃣2\uFE0F⃣3\uFE0F⃣4\uFE0F⃣5\uFE0F⃣6\uFE0F⃣7\uFE0F⃣")
         return sb.toString()
     }
 
