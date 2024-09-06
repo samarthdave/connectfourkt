@@ -19,7 +19,10 @@
 [x] and finally, alpha beta pruning
 [x] improve scoring function for minimax
 [x] fix numbering for the integer drop column lol
+[x] Column Ordering (put good moves first in the alpha/beta search!)
 [ ] profile the program - I probably need to cache the bitboard
+... do I ... do I even have a bitboard lol
+okay I think I do but it's not being used optimally
 [ ] include & enforce a style guide
 [ ] read the blog above & start implementing
   - one anti-pattern i introduced is having multiple score mechanisms for grading...

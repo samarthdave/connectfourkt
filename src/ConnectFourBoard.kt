@@ -38,6 +38,24 @@ class ConnectFourBoard {
         return results
     }
 
+    /**
+     * This is a simple heuristic to prioritize the center columns
+     * hardcoded to handle 7 columns. can generate this list dynamically if width changes
+     * but that'd be a non-standard game
+     */
+    fun availableLocationsCentrallyWeighted(): MutableList<Int> {
+        val optimizedColumns = mutableListOf<Int>(3, 2, 4, 1, 5, 0 ,6)
+        val results = mutableListOf<Int>()
+
+        for (col in optimizedColumns) {
+            if (this.canDropInColumn(col) != null)
+                results += col
+        }
+
+        return results
+    }
+
+
     fun dropPiece(col: Int, pieceColor: ConnectFourBoardPiece): Pair<Boolean, Pair<Int, Int>?> {
         val dropLocation: Pair<Int, Int> = canDropInColumn(col) ?: return Pair(false, null)
 
@@ -135,10 +153,25 @@ class ConnectFourBoard {
         return true
     }
 
+    /**
+     * used in testing to quickly fill the board with moves
+     */
     fun _hydrateBoardState(columnMoves: String) {
         var index = 0
         for (char in columnMoves) {
             this.dropPiece(char.digitToInt(), ConnectFourGame.playerColors[index % 2])
+            index += 1
+        }
+    }
+
+    /**
+     * same as _hydrateBoardState but 1 based indexing for if you connect this to web
+     * basically connectfour.com/moves=142462163 where "142462163" represents board state
+     */
+    fun _hydrateBoardStateEnglish(columnMoves: String) {
+        var index = 0
+        for (char in columnMoves) {
+            this.dropPiece(char.digitToInt() - 1, ConnectFourGame.playerColors[index % 2])
             index += 1
         }
     }

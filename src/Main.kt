@@ -7,7 +7,7 @@ fun main() {
     println("===============================")
     println()
 
-    val myGame = ConnectFourGame(ConnectFourGameMode.SINGLE_PLAYER_VS_COMPUTER_AI, true);
+    val myGame = ConnectFourGame(ConnectFourGameMode.COMPUTER_AI_2_VS_COMPUTER_AI_2, false);
 
     myGame.startGame()
 

@@ -1,7 +1,7 @@
 import kotlin.math.max
 import kotlin.math.min
 
-class ComputerPlayer : Player() {
+open class ComputerPlayer : Player() {
     private val PLAYER_ONE_WIN_SCORE = 1000
     private val PLAYER_TWO_WIN_SCORE = -1000
     private val AGING_PENALTY = 10
@@ -34,7 +34,7 @@ class ComputerPlayer : Player() {
         }
     }
 
-    private fun minimax(node: ConnectFourBoard, depth: Int, maximizingPlayer: Boolean, paramAlpha: Int, paramBeta: Int): Pair<Int, Int> {
+    protected fun minimax(node: ConnectFourBoard, depth: Int, maximizingPlayer: Boolean, paramAlpha: Int, paramBeta: Int): Pair<Int, Int> {
         var alpha = paramAlpha
         var beta = paramBeta
         if (depth == 0 || node.status() != ConnectFourGameStatus.PLAYING) {
@@ -43,7 +43,7 @@ class ComputerPlayer : Player() {
         if (maximizingPlayer) {
             var maxEval = Int.MIN_VALUE
             var chosenCol = -1
-            for (col in node.availableLocations()) {
+            for (col in node.availableLocationsCentrallyWeighted()) {
                 val res = node.dropPiece(col, TRUE_COLOR)
                 val eval = minimax(node, depth - 1, false, alpha, beta).second
                 if (eval > maxEval) {
@@ -61,7 +61,7 @@ class ComputerPlayer : Player() {
         } else {
             var minEval = Int.MAX_VALUE
             var chosenCol = -1
-            for (col in node.availableLocations()) {
+            for (col in node.availableLocationsCentrallyWeighted()) {
                 val res = node.dropPiece(col, FALSE_COLOR)
                 val eval = minimax(node, depth - 1, true, alpha, beta).second
                 if (eval < minEval) {

@@ -1,14 +1,3 @@
-// It would manage the game state, handle user input, and coordinate between the game engine and the
-// user interface.
-// ConnectFourEngine: This class would handle the game logic, including checking for a win, making a move,
-// and managing the game state. It would interact with the Board class to update the game state.
-// ConnectFourState: This class would represent the current state of the game.
-// It would be used by the ConnectFourEngine to manage the game state and would be updated whenever a move is made.
-// ConnectFourGame.startGame(): Starts the game and initializes the game state.
-// ConnectFourGame.endGame(): Ends the game, possibly declaring a winner or indicating a tie.
-// ComputerPlayer.makeMove(Board board): Makes a move using an AI algorithm like minimax.
-// ConnectFourEngine.handlePlayerMove(int column, int player): Handles a player's move by updating the game state and checking for a win or tie.
-
 enum class ConnectFourGameStatus {
     PLAYING,
     TIE,
@@ -42,7 +31,14 @@ class ConnectFourGame(gameModeChoice: ConnectFourGameMode, playingFirstChoice: B
         this.board = ConnectFourBoard()
         this.players = emptyArray<Player>()
 
-        val firstPlayer: Player = HumanPlayer()
+        val firstPlayer: Player
+
+        if (gameModeChoice === ConnectFourGameMode.COMPUTER_AI_2_VS_COMPUTER_AI_2) {
+            firstPlayer = ComputerPlayerLevel2()
+        } else {
+            firstPlayer = HumanPlayer()
+        }
+
         val opponent: Player = when (gameModeChoice) {
             ConnectFourGameMode.SINGLE_PLAYER_VS_RANDOM_AI -> {
                 RandomComputerPlayer()
@@ -52,6 +48,12 @@ class ConnectFourGame(gameModeChoice: ConnectFourGameMode, playingFirstChoice: B
             }
             ConnectFourGameMode.TWO_PLAYER -> {
                 HumanPlayer()
+            }
+            ConnectFourGameMode.SINGLE_PLAYER_VS_COMPUTER_AI_2 -> {
+                ComputerPlayerLevel2()
+            }
+            ConnectFourGameMode.COMPUTER_AI_2_VS_COMPUTER_AI_2 -> {
+                ComputerPlayerLevel2()
             }
         }
 
@@ -65,17 +67,17 @@ class ConnectFourGame(gameModeChoice: ConnectFourGameMode, playingFirstChoice: B
     }
 
     fun startGame() {
-        println(board)
+//        println(board)
         while (this.status() == ConnectFourGameStatus.PLAYING && board.availableLocations().size > 0) {
             // index into whichever player is "current"
             val currentPlayerIndex: Int = movesElapsed % 2
             val choice = players[currentPlayerIndex].makeMove(board)
 
             val didDrop = board.dropPiece(choice, ConnectFourGame.playerColors[currentPlayerIndex])
-            println("Player ${currentPlayerIndex + 1} chose column $choice ; success=${didDrop.first}")
+//            println("Player ${currentPlayerIndex + 1} chose column ${choice+1} ; success=${didDrop.first}")
             if (!didDrop.first)
                 continue
-            println(board) // toString() used here
+//            println(board) // toString() used here
 
             movesElapsed += 1
         }
@@ -83,5 +85,9 @@ class ConnectFourGame(gameModeChoice: ConnectFourGameMode, playingFirstChoice: B
 
     private fun status(): ConnectFourGameStatus {
         return this.board.status()
+    }
+
+    fun _hydrateGameStateEnglish(columnMoves: String) {
+        this.board._hydrateBoardStateEnglish(columnMoves)
     }
 }
