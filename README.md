@@ -20,9 +20,11 @@
 [x] improve scoring function for minimax
 [x] fix numbering for the integer drop column lol
 [x] Column Ordering (put good moves first in the alpha/beta search!)
-[ ] profile the program - I probably need to cache the bitboard
-... do I ... do I even have a bitboard lol
-okay I think I do but it's not being used optimally
+[x] profile the program - I probably need to cache the bitboard
+    [x] fix bit manipulation code
+    [x] nope, we don't have a bit board
+[ ] Store board state as Long and not grid array
+  [ ] fix canDropInColumn to use a bitboard
 [ ] include & enforce a style guide
 [ ] read the blog above & start implementing
   - one anti-pattern i introduced is having multiple score mechanisms for grading...

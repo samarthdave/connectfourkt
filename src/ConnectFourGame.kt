@@ -67,17 +67,17 @@ class ConnectFourGame(gameModeChoice: ConnectFourGameMode, playingFirstChoice: B
     }
 
     fun startGame() {
-//        println(board)
+        println(board)
         while (this.status() == ConnectFourGameStatus.PLAYING && board.availableLocations().size > 0) {
             // index into whichever player is "current"
             val currentPlayerIndex: Int = movesElapsed % 2
             val choice = players[currentPlayerIndex].makeMove(board)
 
             val didDrop = board.dropPiece(choice, ConnectFourGame.playerColors[currentPlayerIndex])
-//            println("Player ${currentPlayerIndex + 1} chose column ${choice+1} ; success=${didDrop.first}")
+            println("Player ${currentPlayerIndex + 1} chose column ${choice+1} ; success=${didDrop.first}")
             if (!didDrop.first)
                 continue
-//            println(board) // toString() used here
+            println(board) // toString() used here
 
             movesElapsed += 1
         }

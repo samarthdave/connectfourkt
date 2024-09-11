@@ -13,6 +13,11 @@ class ConnectFourBoard {
         val colors: Array<ConnectFourBoardPiece> = arrayOf(ConnectFourBoardPiece.RED, ConnectFourBoardPiece.YELLOW)
     }
 
+    private final val directions = arrayOf(
+        Pair(-1, 0), Pair(1, 0), Pair(0, -1), Pair(0, 1),
+        Pair(-1, -1), Pair(-1, 1), Pair(1, -1), Pair(1, 1)
+    )
+
     private val height: Int = DEFAULT_BOARD_HEIGHT
     private val width: Int = DEFAULT_BOARD_WIDTH // standard board dimensions
     private var grid: Array<CharArray> = Array(this.height) { CharArray(this.width) };
@@ -115,21 +120,25 @@ class ConnectFourBoard {
     }
 
     private fun getPositionMaskBitmap(targetPlayer: ConnectFourBoardPiece): Pair<Long, Long> {
-        val position: StringBuilder = StringBuilder()
-        val mask: StringBuilder = StringBuilder()
+        var position: Long = 0
+        var mask: Long = 0
 
         for (j: Int in this.width-1 downTo 0) {
-            mask.append('0')
-            position.append('0')
+            mask = mask shl 1
+            position = position shl 1
 
             for (i in 0..<this.height) {
                 val index: Int = if (this.grid[i][j] != ConnectFourBoardPiece.EMPTY.color) 1 else 0
-                mask.append(arrayOf('0', '1')[index])
-                position.append(arrayOf('0', '1')[if (this.grid[i][j] == targetPlayer.color) 1 else 0])
+
+                mask = mask shl 1
+                mask = if (index == 1) mask or 1 else mask
+
+                position = position shl 1
+                position = if (this.grid[i][j] == targetPlayer.color) position or 1 else position
             }
         }
 
-        return Pair(position.toString().toLong(2), mask.toString().toLong(2))
+        return Pair(position, mask)
     }
 
     private fun checkForWin(): Pair<Boolean, ConnectFourGameStatus> {
@@ -213,10 +222,6 @@ class ConnectFourBoard {
 
     private fun evaluatePosition(row: Int, col: Int, player: Char): Int {
         var score = 0
-        val directions = arrayOf(
-            Pair(-1, 0), Pair(1, 0), Pair(0, -1), Pair(0, 1),
-            Pair(-1, -1), Pair(-1, 1), Pair(1, -1), Pair(1, 1)
-        )
 
         for (dir in directions) {
             var count = 0
