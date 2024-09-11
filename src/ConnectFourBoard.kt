@@ -11,6 +11,7 @@ class ConnectFourBoard {
         const val DEFAULT_BOARD_WIDTH: Int = 7
 
         val colors: Array<ConnectFourBoardPiece> = arrayOf(ConnectFourBoardPiece.RED, ConnectFourBoardPiece.YELLOW)
+        val globalTranspositionTable: TranspositionTable = TranspositionTable()
     }
 
     private final val directions = arrayOf(
@@ -191,9 +192,15 @@ class ConnectFourBoard {
     }
 
     fun calculateStaticEvaluation(): Int {
+        // check against the global transposition table
+        // if the value is not null, return it
+        val score = globalTranspositionTable.getScore(this)
+        if (score != null) return score
+
         val playerScore = evaluatePlayerScore()
         val opponentScore = evaluateOpponentScore()
-        return playerScore - opponentScore
+
+        return globalTranspositionTable.setScore(this, playerScore - opponentScore)
     }
 
     private fun evaluatePlayerScore(): Int {
@@ -235,6 +242,16 @@ class ConnectFourBoard {
             score += count
         }
         return score
+    }
+
+    // TODO: this is a laughably bad hash function and consumes an uneartly amount of memory
+    // use something like this instead: https://github.com/PascalPons/connect4/blob/aaebe007b97e2502bf4a03207d65bae70b052b6f/position.hpp#L155-L158
+    fun generateKey(board: ConnectFourBoard): String {
+        return buildString {
+            for (row in board.grid) {
+                append(row.joinToString(""))
+            }
+        }
     }
 
     override fun toString(): String {

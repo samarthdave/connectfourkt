@@ -35,6 +35,8 @@ class ConnectFourGame(gameModeChoice: ConnectFourGameMode, playingFirstChoice: B
 
         if (gameModeChoice === ConnectFourGameMode.COMPUTER_AI_2_VS_COMPUTER_AI_2) {
             firstPlayer = ComputerPlayerLevel2()
+        } else if (gameModeChoice == ConnectFourGameMode.COMPUTER_AI_VS_COMPUTER_AI) {
+            firstPlayer = ComputerPlayer()
         } else {
             firstPlayer = HumanPlayer()
         }
@@ -44,6 +46,9 @@ class ConnectFourGame(gameModeChoice: ConnectFourGameMode, playingFirstChoice: B
                 RandomComputerPlayer()
             }
             ConnectFourGameMode.SINGLE_PLAYER_VS_COMPUTER_AI -> {
+                ComputerPlayer()
+            }
+            ConnectFourGameMode.COMPUTER_AI_VS_COMPUTER_AI -> {
                 ComputerPlayer()
             }
             ConnectFourGameMode.TWO_PLAYER -> {
