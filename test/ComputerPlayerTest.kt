@@ -86,4 +86,41 @@ class ComputerPlayerTest {
         col = player.makeMove(board, false)
         assertEquals(3, col)
     }
+
+    @Test
+    fun testBoardHorizontalWin1() {
+//        |_|_|_|_|_|_|_|
+//        |_|_|_|_|_|_|_|
+//        |_|_|_|_|_|_|_|
+//        |_|_|_|_|_|_|_|
+//        |X|_|_|_|_|_|_|
+//        |X|X|X|O|O|O|O|
+//         0 1 2 3 4 5 6
+        board.resetBoard()
+        board._hydrateBoardState("23140506")
+
+        assertEquals(board.status(), ConnectFourGameStatus.PLAYER_TWO_WIN)
+    }
+
+    @Test
+    fun testBoardVerticalWin1() {
+        board.resetBoard()
+        board._hydrateBoardState("2323232")
+        assertEquals(board.status(), ConnectFourGameStatus.PLAYER_ONE_WIN)
+    }
+
+    @Test
+    fun testBoardTie() {
+        // https://connect4.gamesolver.org/?pos=444441166666523522222115173554533337717776
+        board.resetBoard()
+        board._hydrateBoardState("333330055555412411111004062443422226606665")
+        assertEquals(board.status(), ConnectFourGameStatus.TIE)
+    }
+
+    @Test
+    fun testBoardPlaying() {
+        board.resetBoard()
+        board._hydrateBoardState("33333005555541241111100406244342222660666")
+        assertEquals(board.status(), ConnectFourGameStatus.PLAYING)
+    }
 }

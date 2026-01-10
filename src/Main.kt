@@ -6,8 +6,8 @@ fun main() {
     println("==== implemented in Kotlin ====")
     println("===============================")
     println()
-    val myGame = ConnectFourGame(ConnectFourGameMode.COMPUTER_AI_VS_COMPUTER_AI, true);
+
+    val myGame = ConnectFourGame(ConnectFourGameMode.COMPUTER_AI_2_VS_COMPUTER_AI_2, true);
 
     myGame.startGame()
-
 }
